@@ -138,7 +138,7 @@ namespace ConsoleApplication1
         }
 
         //hurting the character being passed in
-        public void altHurt(Character character)
+        public void Attack(Character character)
         {
             //local variable to calc magic damage
             int magDamage = this.magDamage;

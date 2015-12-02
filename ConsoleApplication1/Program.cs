@@ -16,6 +16,8 @@ namespace ConsoleApplication1
             Weapon BetterSword = new Weapon("Better Sword", 50, "Normal", 60, "Electric");
             Armor BetterArmor = new Armor("Better Armor", 50, "Normal", 20, "Electric");
 
+            Spell NewSpell = new Spell("testSpell", 5, 20, "Fire", 0);
+
             Character Joe = new Character ("Joe", 100, 20, 2.0, 2.0, 1.0, RustySword, WoodenSheild);
             Character Bob = new Character ("Bob", 100, 20, 1.0, 2.0, 1.0, RustySword, WoodenSheild);
 
