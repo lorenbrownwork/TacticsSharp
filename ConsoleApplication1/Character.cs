@@ -98,7 +98,7 @@ namespace ConsoleApplication1
 
             //cout << actDamage << endl;
 
-            //prevent Negative Health
+            //prevent Negative Health hi
             if (actDamage > 0)
             {
                 if (this.HP > actDamage)
