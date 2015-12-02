@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace ConsoleApplication1
 {
-    class Weapon
+    [Serializable]
+    public class Weapon
     {
         private string name, physicalType, magicType;
         private int physicalDamage, magicDamage;

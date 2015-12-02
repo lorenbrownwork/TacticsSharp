@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace ConsoleApplication1
 {
-    class Character
+    [Serializable]
+    public class Character
     {
         private string name;
         private int maxHP, maxMP, HP, MP;
@@ -15,7 +16,11 @@ namespace ConsoleApplication1
         private Weapon weapon;
         private Armor armor;
 
-        //Constructor
+        //Constructors
+        public Character() {
+            this.name = "Jerk";
+        }
+
         public Character(string name, int maxHP, int maxMP, double toughnes, double strength, double manaGen, Weapon weapon, Armor armor) {
             this.name = name;
             this.maxHP = maxHP;

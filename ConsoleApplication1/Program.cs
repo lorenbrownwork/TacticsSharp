@@ -3,6 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.IO;
+using Newtonsoft.Json;
+using System.Reflection;
+using System.Runtime.Serialization;
+using System.Runtime.Serialization.Formatters.Binary;
 
 namespace ConsoleApplication1
 {
@@ -19,7 +24,42 @@ namespace ConsoleApplication1
             Console.WriteLine(Joe.getHP());
             Joe.hurt(Bob);
             Console.WriteLine(Joe.getHP());
+
+            string path = serializer(Joe);
+            Character Joe2 = deserializer(path);
+
+            //Wait
             Console.ReadKey();
+
+        }
+
+        static string serializer(Character character)
+        {
+            //Path to Desktop
+            string path = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+            path = path + "\\" + character.getName() + ".bin";
+            Console.WriteLine(path);
+
+            //Serialize
+            IFormatter formatter = new BinaryFormatter();
+            Stream stream = new FileStream(path, FileMode.Create, FileAccess.Write, FileShare.None);
+            formatter.Serialize(stream, character);
+            stream.Close();
+
+            return path;
+        }
+
+        static Character deserializer(string path)
+        {
+            IFormatter formatter = new BinaryFormatter();
+            Stream stream = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read);
+            Character obj = (Character)formatter.Deserialize(stream);
+            stream.Close();
+
+            // Here's the proof.
+            Console.WriteLine("Name: {0}", obj.getName());
+
+            return obj;
         }
     }
 }
