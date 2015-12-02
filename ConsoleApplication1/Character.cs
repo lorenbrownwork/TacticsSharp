@@ -9,24 +9,32 @@ namespace ConsoleApplication1
     class Character
     {
         private string name;
-        private int maxHP, maxMP, HP, MP;
-        private double strength, toughnes, manaGen;
+        private int maxHP, maxMP, HP, MP, physDamage, magDamage, physResist, magResist;
+        private double strength, toughness, manaGen;
 
         private Weapon weapon;
         private Armor armor;
 
         //Constructor
-        public Character(string name, int maxHP, int maxMP, double toughnes, double strength, double manaGen, Weapon weapon, Armor armor) {
+        public Character(string name, int maxHP, int maxMP, double toughness, double strength, double manaGen, Weapon weapon, Armor armor) {
             this.name = name;
             this.maxHP = maxHP;
             this.maxMP = maxMP;
-            this.toughnes = toughnes;
+            this.toughness = toughness;
             this.strength = strength;
             this.manaGen = manaGen;
             this.weapon = weapon;
             this.armor = armor;
             this.HP = maxHP;
             this.MP = maxMP;
+
+            //setting attack values on construction
+            this.physDamage = (int)(this.weapon.getPhysicalDamage() * this.strength);
+            this.magDamage = (int)(this.weapon.getMagicDamage() * this.strength);
+
+            //setting resists on construction
+            this.physResist = (int)(this.armor.getPhysicalResist() * this.toughness);
+            this.magResist = (int)(this.armor.getMagicResist() * this.toughness);
         }
 
         //Getters
@@ -36,8 +44,29 @@ namespace ConsoleApplication1
         public double getStrength() { return strength; }
         public Weapon getWeapon() { return weapon; }
 
+        //Equipment changers
+        public void changeWeapon(Weapon newWeapon)
+        {
+            //setting the character's new weapon
+            this.weapon = newWeapon;
+
+            //setting the new attack values
+            this.physDamage = (int)(this.weapon.getPhysicalDamage() * this.strength);
+            this.magDamage = (int)(this.weapon.getMagicDamage() * this.strength);
+        }
+
+        public void changeArmor(Armor newArmor)
+        {
+            //setting the character's new armor
+            this.armor = newArmor;
+
+            //setting the new resists
+            this.physResist = (int)(this.armor.getPhysicalResist() * this.toughness);
+            this.magResist = (int)(this.armor.getMagicResist() * this.toughness);
+        }
+
         //Heal by points
-        private void heal(int value)
+        public void heal(int value)
         {
             this.HP += value;
             if (this.HP > this.maxHP)
@@ -45,7 +74,7 @@ namespace ConsoleApplication1
         }
 
         //Heal by percentage
-        private void heal(float percent)
+        public void heal(float percent)
         {
             this.HP += (int)(percent * this.maxHP);
             if (this.HP > this.maxHP)
@@ -57,10 +86,10 @@ namespace ConsoleApplication1
         //Character passed hurts this character
         public void hurt(Character character)
         {
-            int physDamage = (int) (character.getWeapon().getPhysicalDamage() * character.getStrength());
-            int magDamage = (int) (character.getWeapon().getMagicDamage() * character.getStrength());
-            int physResist = (int) (this.armor.getPhysicalResist() * this.toughnes);
-            int magResist = (int) (this.armor.getMagicResist() * this.toughnes);
+            int physDamage = character.physDamage;
+            int magDamage = character.magDamage;
+            int physResist = this.physResist;
+            int magResist = this.magResist;
 
             string magicDefType = this.armor.getMagicType();
             string magicAtcType = character.getWeapon().getMagicType();
@@ -105,6 +134,53 @@ namespace ConsoleApplication1
                     this.HP -= actDamage;
                 else
                     this.HP = 0;
+            }
+        }
+
+        //hurting the character being passed in
+        public void altHurt(Character character)
+        {
+            //local variable to calc magic damage
+            int magDamage = this.magDamage;
+
+            //types of damage and resist
+            //probably remove magic from most weapons
+            string magicAtkType = weapon.getMagicType();
+            string magicResType = character.armor.getMagicType();
+
+            //check if magic resistances/weaknesses make sense
+            if (magicAtkType.Equals(magicResType))
+            {
+                magDamage = (int)(magDamage * .5);
+            }
+            else if (magicAtkType.Equals("Fire") && magicResType.Equals("Electric"))
+            {
+                magDamage = (int)(magDamage * 1.5);
+            }
+            else if (magicAtkType.Equals("Ice") && magicResType.Equals("Fire"))
+            {
+                magDamage = (int)(magDamage * 1.5);
+            }
+            else if (magicAtkType.Equals("Electric") && magicResType.Equals("Ice"))
+            {
+                magDamage = (int)(magDamage * 1.5);
+            }
+
+            //calc total damage
+            int totalDam = (this.physDamage - character.physResist) + (magDamage - character.magResist);
+
+            //making sure HP doesn't go negative
+            if (totalDam > 0)
+            {
+                if (character.HP > totalDam)
+                {
+                    character.HP -= totalDam;
+                }
+                else
+                {
+                    character.HP = 0;
+                }
+
             }
         }
     }
