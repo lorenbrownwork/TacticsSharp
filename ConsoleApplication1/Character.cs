@@ -12,6 +12,9 @@ namespace ConsoleApplication1
         private int maxHP, maxMP, HP, MP, physDamage, magDamage, physResist, magResist;
         private double strength, toughness, manaGen;
 
+        private List<int> activeEffects = new List<int>();
+        private List<int> knownSpells = new List<int>();
+
         private Weapon weapon;
         private Armor armor;
 
@@ -182,6 +185,13 @@ namespace ConsoleApplication1
                 }
 
             }
+        }
+
+        //single target and AoE?
+        //won't need a character in the latter case
+        public void CastSpell(Character character, Spell spell)
+        {
+
         }
     }
 }
