@@ -59,6 +59,18 @@ namespace TacticsSharp
             Joe.LearnSpell(NewSpell);
             Joe.LearnSpell(NewSpell);
 
+            List<SpellEffect> effectList = new List<SpellEffect>();
+            effectList = SpellEffect.ImportEffects("C:\\Users\\colton.herrod\\Documents\\Git Repos\\Side Projects\\TacticsSharp\\ConsoleApplication1\\ImportFiles\\effect-list.csv", effectList);
+
+            List<Spell> spellList = new List<Spell>();
+            spellList = Spell.ImportSpells("C:\\Users\\colton.herrod\\Documents\\Git Repos\\Side Projects\\TacticsSharp\\ConsoleApplication1\\ImportFiles\\spell-list.csv", spellList, effectList);
+
+            foreach(Spell spell in spellList)
+            {
+
+                Console.WriteLine(spell.getName());
+            }
+
             //Wait
             Console.ReadKey();
 
