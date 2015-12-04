@@ -9,7 +9,7 @@ using System.Reflection;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 
-namespace ConsoleApplication1
+namespace TacticsSharp
 {
     class Program
     {
@@ -21,7 +21,10 @@ namespace ConsoleApplication1
             Weapon BetterSword = new Weapon("Better Sword", 50, "Normal", 60, "Electric");
             Armor BetterArmor = new Armor("Better Armor", 50, "Normal", 20, "Electric");
 
-            Spell NewSpell = new Spell("testSpell", 5, 20, "Fire", 0);
+            SpellEffect poison = new SpellEffect("Poison", "Normal", 2, 3);
+
+            Spell NewSpell = new Spell("testSpell", 5, 20, "Fire", poison);
+            //Spell NextSpell = new Spell("nextSpell", 2, 5, "Fire", 0);
 
             Character Joe = new Character ("Joe", 100, 20, 2.0, 2.0, 1.0, RustySword, WoodenSheild);
             Character Bob = new Character ("Bob", 100, 20, 1.0, 2.0, 1.0, RustySword, WoodenSheild);
@@ -39,20 +42,22 @@ namespace ConsoleApplication1
 
             //change weapon test
             Bob.changeWeapon(BetterSword);
-            Joe.hurt(Bob);
+            Bob.Attack(Joe);
             Console.WriteLine(Joe.getHP());
             Joe.heal(100F);
             Console.WriteLine(Joe.getHP());
 
             Joe.changeArmor(BetterArmor);
-            Joe.hurt(Bob);
+            Bob.Attack(Joe);
             Console.WriteLine(Joe.getHP());
             Joe.heal(100F);
             Console.WriteLine(Joe.getHP());
 
-
             string path = serializer(Joe);
             Character Joe2 = deserializer(path);
+
+            Joe.LearnSpell(NewSpell);
+            Joe.LearnSpell(NewSpell);
 
             //Wait
             Console.ReadKey();

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ConsoleApplication1
+namespace TacticsSharp
 {
     [Serializable]
     public class Character
@@ -13,8 +13,8 @@ namespace ConsoleApplication1
         private int maxHP, maxMP, HP, MP, physDamage, magDamage, physResist, magResist;
         private double strength, toughness, manaGen;
 
-        private List<int> activeEffects = new List<int>();
-        private List<int> knownSpells = new List<int>();
+        private List<SpellEffect> activeEffects = new List<SpellEffect>();
+        private List<Spell> knownSpells = new List<Spell>();
 
         private Weapon weapon;
         private Armor armor;
@@ -147,28 +147,12 @@ namespace ConsoleApplication1
             //local variable to calc magic damage
             int magDamage = this.magDamage;
 
-            //types of damage and resist
+            
+            //type of damage
             //probably remove magic from most weapons
             string magicAtkType = weapon.getMagicType();
-            string magicResType = character.armor.getMagicType();
 
-            //check if magic resistances/weaknesses make sense
-            if (magicAtkType.Equals(magicResType))
-            {
-                magDamage = (int)(magDamage * .5);
-            }
-            else if (magicAtkType.Equals("Fire") && magicResType.Equals("Electric"))
-            {
-                magDamage = (int)(magDamage * 1.5);
-            }
-            else if (magicAtkType.Equals("Ice") && magicResType.Equals("Fire"))
-            {
-                magDamage = (int)(magDamage * 1.5);
-            }
-            else if (magicAtkType.Equals("Electric") && magicResType.Equals("Ice"))
-            {
-                magDamage = (int)(magDamage * 1.5);
-            }
+            magDamage = checkResist(magDamage, magicAtkType, character.armor.getMagicType());
 
             //calc total damage
             int totalDam = (this.physDamage - character.physResist) + (magDamage - character.magResist);
@@ -184,7 +168,6 @@ namespace ConsoleApplication1
                 {
                     character.HP = 0;
                 }
-
             }
         }
 
@@ -192,7 +175,55 @@ namespace ConsoleApplication1
         //won't need a character in the latter case
         public void CastSpell(Character character, Spell spell)
         {
+            int damage = spell.getDamage();
+            string type = spell.getType();
 
+            damage = checkResist(damage, type, character.armor.getMagicType());
+
+            int totalDam = damage - character.magResist;
+
+            if (spell.getEffect() != null)
+            {
+                character.activeEffects.Add(spell.getEffect());
+            }
+        }
+
+        public void LearnSpell(Spell spell)
+        {
+            bool alreadyInList = knownSpells.Contains(spell);
+
+            if (alreadyInList)
+            {
+                Console.WriteLine("You already know that spell!");
+            }
+            else
+            {
+                knownSpells.Add(spell);
+                Console.WriteLine("Spell learned.");
+            }
+        }
+
+        public int checkResist(int damage, string atkType, string defType)
+        {
+            //check if magic resistances/weaknesses make sense
+            if (atkType.Equals(defType))
+            {
+                damage = (int)(damage * .5);
+            }
+            else if (atkType.Equals("Fire") && defType.Equals("Electric"))
+            {
+                damage = (int)(magDamage * 1.5);
+            }
+            else if (atkType.Equals("Ice") && defType.Equals("Fire"))
+            {
+                damage = (int)(magDamage * 1.5);
+            }
+            else if (atkType.Equals("Electric") && defType.Equals("Ice"))
+            {
+                damage = (int)(magDamage * 1.5);
+            }
+
+            return damage;
         }
     }
 }
