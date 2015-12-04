@@ -24,7 +24,7 @@ namespace TacticsSharp
             SpellEffect poison = new SpellEffect("Poison", "Normal", 2, 3);
 
             Spell NewSpell = new Spell("testSpell", 5, 20, "Fire", poison);
-            //Spell NextSpell = new Spell("nextSpell", 2, 5, "Fire", 0);
+            Spell NextSpell = new Spell("nextSpell", 2, 5, "Fire");
 
             Character Joe = new Character ("Joe", 100, 20, 2.0, 2.0, 1.0, RustySword, WoodenSheild);
             Character Bob = new Character ("Bob", 100, 20, 1.0, 2.0, 1.0, RustySword, WoodenSheild);

@@ -157,18 +157,7 @@ namespace TacticsSharp
             //calc total damage
             int totalDam = (this.physDamage - character.physResist) + (magDamage - character.magResist);
 
-            //making sure HP doesn't go negative
-            if (totalDam > 0)
-            {
-                if (character.HP > totalDam)
-                {
-                    character.HP -= totalDam;
-                }
-                else
-                {
-                    character.HP = 0;
-                }
-            }
+            takeDamage(character, totalDam);
         }
 
         //single target and AoE?
@@ -186,6 +175,8 @@ namespace TacticsSharp
             {
                 character.activeEffects.Add(spell.getEffect());
             }
+
+            takeDamage(character, totalDam);
         }
 
         public void LearnSpell(Spell spell)
@@ -200,6 +191,22 @@ namespace TacticsSharp
             {
                 knownSpells.Add(spell);
                 Console.WriteLine("Spell learned.");
+            }
+        }
+
+        public void takeDamage(Character character, int damage)
+        {
+            //making sure HP doesn't go negative
+            if (damage > 0)
+            {
+                if (character.HP > damage)
+                {
+                    character.HP -= damage;
+                }
+                else
+                {
+                    character.HP = 0;
+                }
             }
         }
 

@@ -26,6 +26,16 @@ namespace TacticsSharp
             this.id = counter;
             Interlocked.Increment(ref counter);
         }
+        public Spell(string name, int cost, int damage, string type)
+        {
+            this.name = name;
+            this.cost = cost;
+            this.damage = damage;
+            this.type = type;
+            this.effect = null;
+            this.id = counter;
+            Interlocked.Increment(ref counter);
+        }
 
         public int getDamage() { return damage; }
         public string getType() { return type; }
