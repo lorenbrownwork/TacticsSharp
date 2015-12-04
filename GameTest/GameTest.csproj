@@ -58,7 +58,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ConsoleApplication1\Game.csproj">
+    <ProjectReference Include="..\TacticsSharp\Game.csproj">
       <Project>{fcf6ff10-f737-476f-afc3-e6f3cb42a800}</Project>
       <Name>Game</Name>
     </ProjectReference>

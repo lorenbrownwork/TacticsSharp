@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.IO;
+using Newtonsoft.Json;
 using System.Reflection;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
@@ -14,8 +15,6 @@ namespace TacticsSharp
     {
         static void Main(string[] args)
         {
-            PlayGame game = new PlayGame();
-
             Armor WoodenSheild = new Armor ("Wooden Sheild", 10, "Normal", 10, "Fire");
             Weapon RustySword = new Weapon ("Rusty Sword", 30, "Normal", 40, "Fire");
 
@@ -61,17 +60,17 @@ namespace TacticsSharp
             Joe.LearnSpell(NewSpell);
 
             List<SpellEffect> effectList = new List<SpellEffect>();
-            effectList = SpellEffect.ImportEffects("C:\\Users\\colton.herrod\\Documents\\Git Repos\\Side Projects\\TacticsSharp\\ConsoleApplication1\\ImportFiles\\effect-list.csv", effectList);
+            effectList = SpellEffect.ImportEffects("../../ImportFiles/effect-list.csv", effectList);
 
             List<Spell> spellList = new List<Spell>();
-            spellList = Spell.ImportSpells("C:\\Users\\colton.herrod\\Documents\\Git Repos\\Side Projects\\TacticsSharp\\ConsoleApplication1\\ImportFiles\\spell-list.csv", spellList, effectList);
+            spellList = Spell.ImportSpells("../../ImportFiles/spell-list.csv", spellList, effectList);
 
-            foreach(Spell spell in spellList)
+            foreach (Spell spell in spellList)
             {
 
                 Console.WriteLine(spell.getName());
             }
-
+            Console.WriteLine(Environment.CurrentDirectory);
             //Wait
             Console.ReadKey();
 
