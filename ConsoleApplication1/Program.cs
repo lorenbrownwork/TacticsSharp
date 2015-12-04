@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.IO;
-using Newtonsoft.Json;
 using System.Reflection;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
@@ -15,6 +14,8 @@ namespace TacticsSharp
     {
         static void Main(string[] args)
         {
+            PlayGame game = new PlayGame();
+
             Armor WoodenSheild = new Armor ("Wooden Sheild", 10, "Normal", 10, "Fire");
             Weapon RustySword = new Weapon ("Rusty Sword", 30, "Normal", 40, "Fire");
 
