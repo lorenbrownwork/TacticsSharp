@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -23,6 +24,22 @@ namespace TacticsSharp
             this.duration = duration;
             this.id = counter;
             Interlocked.Increment(ref counter);
+        }
+
+        public int GetId() { return id; }
+
+        public static List<SpellEffect> ImportEffects(string path, List<SpellEffect> effectList)
+        {
+            var reader = new StreamReader(File.OpenRead(path));
+
+            while (!reader.EndOfStream)
+            {
+                string line = reader.ReadLine();
+                string[] vals = line.Split(',');
+                effectList.Add(new SpellEffect(vals[0], vals[1], Int32.Parse(vals[2]), Int32.Parse(vals[3])));
+            }
+
+            return effectList;
         }
     }
 }
