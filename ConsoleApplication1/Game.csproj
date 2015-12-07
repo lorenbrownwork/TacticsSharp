@@ -45,6 +45,7 @@
   <ItemGroup>
     <Compile Include="Character.cs" />
     <Compile Include="Armor.cs" />
+    <Compile Include="PlayGame.cs" />
     <Compile Include="Spell.cs" />
     <Compile Include="SpellEffect.cs" />
     <Compile Include="Weapon.cs" />
@@ -54,6 +55,7 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="ImportFiles\effect-list.csv" />
+    <None Include="packages.config" />
     <None Include="ImportFiles\spell-list.csv" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
