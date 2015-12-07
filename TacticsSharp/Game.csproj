@@ -45,7 +45,9 @@
   <ItemGroup>
     <Compile Include="Character.cs" />
     <Compile Include="Armor.cs" />
-    <Compile Include="PlayGame.cs" />
+    <Compile Include="Battle.cs" />
+    <Compile Include="Team.cs" />
+    <Compile Include="StartMenu.cs" />
     <Compile Include="Spell.cs" />
     <Compile Include="SpellEffect.cs" />
     <Compile Include="Weapon.cs" />

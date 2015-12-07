@@ -6,15 +6,55 @@ using System.Threading.Tasks;
 
 namespace TacticsSharp
 {
-    class PlayGame
+    class StartMenu
     {
-        public PlayGame()
-        {
-            mainMenu();
-        }
 
         //Number of selections - 1
-        private int posMax = 1;
+        private int posMax = 2;
+        private Team aTeam;
+        private Team bTeam;
+
+        //Constructor
+        public StartMenu()
+        {
+            int selection = mainMenu();
+            switch (selection)
+            {
+                case 0:
+                    Console.WriteLine("New Game Selected");
+                    break;
+                case 1:
+                    Console.WriteLine("Load Game Selected");
+                    break;
+                case 2:
+                    Console.WriteLine("Quick battle Selected");
+                    quickBattle();
+                    break;
+            }
+
+        }
+
+        //Generat two teams to battle and start battle
+        private void quickBattle()
+        {
+            this.aTeam = new Team();
+            this.bTeam = new Team();
+            startBattle();
+        }
+
+        //Start battle
+        public bool startBattle()
+        {
+            if (this.aTeam == null || this.bTeam == null)
+            {
+                Console.WriteLine("Must have two teams to battle");
+                return false;
+            }
+            Console.WriteLine("Starting battle");
+            Battle myBattle = new Battle(aTeam, bTeam);
+            Console.WriteLine(myBattle.Winner);
+            return true;
+        }
 
         public int mainMenu()
         {
@@ -46,6 +86,13 @@ namespace TacticsSharp
                     Console.ForegroundColor = ConsoleColor.White;
                 }
                 else { Console.WriteLine("    Load Game"); }
+                if (position == 2)
+                {
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.WriteLine("    Quick Battle");
+                    Console.ForegroundColor = ConsoleColor.White;
+                }
+                else { Console.WriteLine("    Quick Battle"); }
 
                 //Read Key Input
                 ConsoleKeyInfo keypressed = Console.ReadKey(false);

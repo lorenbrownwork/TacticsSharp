@@ -71,7 +71,7 @@ namespace TacticsSharp
             }
             Console.WriteLine(Environment.CurrentDirectory);
 
-            PlayGame game = new PlayGame();
+            StartMenu game = new StartMenu();
             
             //Wait
             Console.ReadKey();

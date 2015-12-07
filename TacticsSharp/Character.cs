@@ -19,6 +19,42 @@ namespace TacticsSharp
         private Weapon weapon;
         private Armor armor;
 
+        //Default Constructor (Build a character)
+        public Character()
+        {
+            Console.Clear();
+            Console.WriteLine("Welcome to the Character Builder!");
+            Console.Write("    Please Select a name: ");
+            this.name = Console.ReadLine();
+            Console.WriteLine("    Max HP: 100");
+            Console.WriteLine("    Max MP: 100");
+            Console.WriteLine("    Physical Damage: 20");
+            Console.WriteLine("    Magic Damage: 20");
+            Console.WriteLine("    Physical Resist: 10");
+            Console.WriteLine("    Magic Resist: 10");
+            Console.WriteLine("    Stregth Multiplier: 1.0");
+            Console.WriteLine("    Toughness Multiplier: 1.0");
+            Console.WriteLine("    ManaGen Multiplier: 1.0");
+            Console.WriteLine("    Weapon: Rusty Sword");
+            Console.WriteLine("    Armor: Wooden Sheild");
+            Console.WriteLine("");
+            Console.WriteLine("    Press Any key to continue...");
+            Console.ReadLine(); //Wait
+            Console.Clear();
+
+            maxHP = 100;
+            maxMP = 100;
+            physDamage = 20;
+            magDamage = 20;
+            physResist = 10;
+            magResist = 10;
+            strength = 1.0;
+            toughness = 1.0;
+            manaGen = 1.0;
+            weapon = new Weapon("Rusty Sword", 20, "Normal", 0, "None");
+            armor = new Armor("Wooden Sheild", 10, "Normal", 0, "None");
+        }
+
         //Constructor
         public Character(string name, int maxHP, int maxMP, double toughness, double strength, double manaGen, Weapon weapon, Armor armor) {
             this.name = name;
