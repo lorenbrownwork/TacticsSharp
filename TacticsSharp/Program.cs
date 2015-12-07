@@ -70,6 +70,9 @@ namespace TacticsSharp
                 Console.WriteLine(spell.getName());
             }
             Console.WriteLine(Environment.CurrentDirectory);
+
+            PlayGame game = new PlayGame();
+            
             //Wait
             Console.ReadKey();
 
