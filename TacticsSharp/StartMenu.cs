@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.IO;
+using System.Runtime.Serialization;
+using System.Runtime.Serialization.Formatters.Binary;
 
 namespace TacticsSharp
 {
@@ -13,10 +16,15 @@ namespace TacticsSharp
         private int posMax = 2;
         private Team aTeam;
         private Team bTeam;
+        private List<Character> userClan; //Holds all characters (team or not)
+        private List<Character> npcClan;  //Holds all NPC characters (team or not)
 
         //Constructor
         public StartMenu()
         {
+            userClan = new List<Character>();
+            npcClan = new List<Character>();
+
             int selection = mainMenu();
             switch (selection)
             {
@@ -25,13 +33,88 @@ namespace TacticsSharp
                     break;
                 case 1:
                     Console.WriteLine("Load Game Selected");
+                    loadUserCharacters();
                     break;
                 case 2:
-                    Console.WriteLine("Quick battle Selected");
+                    Console.WriteLine("Save Game Selected");
+                    saveUserCharacters();
+                    break;
+                case 3:
+                    Console.WriteLine("Quick Battle Selected");
                     quickBattle();
                     break;
             }
+        }
 
+        private void loadUserCharacters()
+        {
+            string userClanPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\TacticsSharp\\UserClans";
+            Directory.CreateDirectory(userClanPath); //Create directory if it does not exist
+
+            //Grab each file in the Clan Directory
+            string[] fileEntries = Directory.GetFiles(userClanPath);
+            foreach (string fileName in fileEntries)
+            {
+                userClan.Add(deserializer(fileName));
+            }
+
+            Console.WriteLine(userClan[0].getName());
+                
+        }
+        private void saveUserCharacters()
+        {
+            //TEMP: Create some characters
+            /*for (int i = 0; i < 3; i++)
+            {
+                //Character temp = new Character();
+                userClan.Add(new Character());
+            }*/
+
+            string userClanPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\TacticsSharp\\UserClans";
+            Directory.CreateDirectory(userClanPath); //Create directory if it does not exist
+
+            //Iterate over Character list
+            for (int i = 0; i < userClan.Count; i++)
+            {
+                serializer(userClan[i], userClanPath);
+            }
+
+            //Display files
+            /*
+            Console.WriteLine(userClanPath);
+            string[] fileEntries = Directory.GetFiles(userClanPath);
+            foreach (string fileName in fileEntries)
+                Console.WriteLine("   " + fileName);
+            */
+
+        }
+
+        static string serializer(Character character, string path)
+        {
+            //Path to Desktop
+            path = path + "\\" + character.getName() + ".bin";
+            Console.WriteLine(path);
+
+            //Serialize
+            IFormatter formatter = new BinaryFormatter();
+            Stream stream = new FileStream(path, FileMode.Create, FileAccess.Write, FileShare.None);
+            formatter.Serialize(stream, character);
+            stream.Close();
+
+            return path;
+        }
+
+        static Character deserializer(string path)
+        {
+            IFormatter formatter = new BinaryFormatter();
+            Stream stream = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read);
+            Character obj = (Character)formatter.Deserialize(stream);
+            stream.Close();
+
+            // Here's the proof.
+            Console.WriteLine("Name: {0}", obj.getName());
+
+            return obj;
         }
 
         //Generat two teams to battle and start battle
@@ -87,6 +170,13 @@ namespace TacticsSharp
                 }
                 else { Console.WriteLine("    Load Game"); }
                 if (position == 2)
+                {
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.WriteLine("    Save Game");
+                    Console.ForegroundColor = ConsoleColor.White;
+                }
+                else { Console.WriteLine("    Save Game"); }
+                if (position == 3)
                 {
                     Console.ForegroundColor = ConsoleColor.Green;
                     Console.WriteLine("    Quick Battle");

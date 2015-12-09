@@ -20,15 +20,14 @@ namespace TacticsSharp
 
             while (battleRages())
             {
-                
+                autoTurn();
             }
         }
 
         private void autoTurn()
         {
-
             //Team A's turn
-            foreach (var teamMember in aTeam.roster)
+            for (int i = 0; i < aTeam.roster.Count; i++)
             {
                 //Check if battle is over
                 if (battleRages() == false)
@@ -37,21 +36,28 @@ namespace TacticsSharp
                 }
 
                 //Check if team member is alive (skip turn if not) 
-                if (teamMember.getHP() > 0)
+                if (aTeam.roster[i].getHP() > 0)
                 {
                     while (true)
                     {
                         int r = rnd.Next(bTeam.roster.Count); //Randomly pick aponent
                         if (bTeam.roster[r].getHP() > 0) //Check if aponent is alive.
                         {
-                            bTeam.roster[r].hurt(teamMember); //teamMember hurts bTeam.roster[r]
+                            bTeam.roster[r].hurt(aTeam.roster[i]); //teamMember hurts bTeam.roster[r]
+                            break;
                         }
                     }
+
+                    //Display Team
+                    aTeam.displayTeam();
+                    bTeam.displayTeam();
+                    Console.ReadLine();
+                    Console.Clear();
                 }
             }
 
             //Team B's turn
-            foreach (var teamMember in aTeam.roster)
+            for (int i = 0; i < bTeam.roster.Count; i++)
             {
                 //Check if battle is over
                 if (battleRages() == false)
@@ -60,32 +66,43 @@ namespace TacticsSharp
                 }
 
                 //Check if team member is alive (skip turn if not) 
-                if (teamMember.getHP() > 0)
+                if (bTeam.roster[i].getHP() > 0)
                 {
                     while (true)
                     {
                         int r = rnd.Next(aTeam.roster.Count); //Randomly pick aponent
                         if (aTeam.roster[r].getHP() > 0) //Check if aponent is alive.
                         {
-                            aTeam.roster[r].hurt(teamMember); //teamMember hurts aTeam.roster[r]
+                            aTeam.roster[r].hurt(bTeam.roster[i]); //teamMember hurts aTeam.roster[r]
+                            break;
                         }
                     }
+                    //Display Team
+                    aTeam.displayTeam();
+                    bTeam.displayTeam();
+                    Console.ReadLine();
+                    Console.Clear();
                 }
             }
         }
 
+        //Check if the battle is still going
         private bool battleRages()
         {
             int aHealth = aTeam.roster.Sum(x => x.getHP());
             int bHealth = bTeam.roster.Sum(x => x.getHP());
 
-            if (aHealth <= 0 || bHealth <=0)
-            {
-                return false;
-            }
+            //Console.WriteLine(aHealth);
+            //Console.WriteLine(bHealth);
+
+            //if (aHealth <= 0 || bHealth <=0)
+            //{
+            //    return false;
+            //}
             return true;
         }
 
+        //winner getter
         public string Winner
         {
             get
