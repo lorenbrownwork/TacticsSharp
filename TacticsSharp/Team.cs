@@ -29,10 +29,10 @@ namespace TacticsSharp
         public bool addCharacter(Character guy)
         {
             //Check for identical character name
-            if (roster.Exists(x => (x.getName() == guy.getName())))
-            {
-                return false;
-            }
+            //if (roster.Exists(x => (x.getName() == guy.getName())))
+            //{
+            //    return false;
+            //}
             roster.Add(guy);
             return true;
         }
@@ -51,41 +51,20 @@ namespace TacticsSharp
 
         public string Name
         {
-            get
-            {
-                return name;
-            }
-
-            set
-            {
-                name = value;
-            }
+            get { return name; }
+            set { name = value; }
         }
 
         public int Wins
         {
-            get
-            {
-                return wins;
-            }
-
-            set
-            {
-                wins = value;
-            }
+            get { return wins; } 
+            set { wins = value; }
         }
 
         public int Losses
         {
-            get
-            {
-                return losses;
-            }
-
-            set
-            {
-                losses = value;
-            }
+            get { return losses; }
+            set { losses = value; }
         }
     }
 }

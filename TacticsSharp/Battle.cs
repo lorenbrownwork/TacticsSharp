@@ -20,7 +20,18 @@ namespace TacticsSharp
 
             while (battleRages())
             {
-                
+                autoTurn();
+            }
+            int aHealth = aTeam.roster.Sum(x => x.getHP());
+            int bHealth = bTeam.roster.Sum(x => x.getHP());
+
+            if (aHealth > bHealth)
+            {
+                winner = "A";
+            }
+            else if(bHealth > aHealth)
+            {
+                winner = "B";
             }
         }
 
@@ -39,14 +50,15 @@ namespace TacticsSharp
                 //Check if team member is alive (skip turn if not) 
                 if (teamMember.getHP() > 0)
                 {
-                    while (true)
+                    int r = rnd.Next(bTeam.roster.Count); //Randomly pick aponent
+                    while (bTeam.roster[r].getHP() <= 0)
                     {
-                        int r = rnd.Next(bTeam.roster.Count); //Randomly pick aponent
-                        if (bTeam.roster[r].getHP() > 0) //Check if aponent is alive.
-                        {
-                            bTeam.roster[r].hurt(teamMember); //teamMember hurts bTeam.roster[r]
-                        }
+                        r = rnd.Next(bTeam.roster.Count);
                     }
+                    bTeam.roster[r].hurt(teamMember); //teamMember hurts bTeam.roster[r]
+                    Console.WriteLine(bTeam.roster[r].getName() + ": " + bTeam.roster[r].getHP());
+                        
+                    
                 }
             }
 
@@ -62,14 +74,14 @@ namespace TacticsSharp
                 //Check if team member is alive (skip turn if not) 
                 if (teamMember.getHP() > 0)
                 {
-                    while (true)
+                    int r = rnd.Next(aTeam.roster.Count); //Randomly pick aponent
+                    while (aTeam.roster[r].getHP() <= 0)
                     {
-                        int r = rnd.Next(aTeam.roster.Count); //Randomly pick aponent
-                        if (aTeam.roster[r].getHP() > 0) //Check if aponent is alive.
-                        {
-                            aTeam.roster[r].hurt(teamMember); //teamMember hurts aTeam.roster[r]
-                        }
+                        r = rnd.Next(aTeam.roster.Count);
                     }
+                    aTeam.roster[r].hurt(teamMember); //teamMember hurts aTeam.roster[r]
+                    Console.WriteLine(aTeam.roster[r].getName() + ": " + aTeam.roster[r].getHP());
+                     
                 }
             }
         }
