@@ -39,11 +39,13 @@ namespace TacticsSharp
             Console.WriteLine("    Armor: Wooden Sheild");
             Console.WriteLine("");
             Console.WriteLine("    Press Any key to continue...");
-            Console.ReadLine(); //Wait
+            //Console.ReadLine(); //Wait
             Console.Clear();
 
             maxHP = 100;
             maxMP = 100;
+            HP = 100;
+            MP = 100;
             physDamage = 20;
             magDamage = 20;
             physResist = 10;

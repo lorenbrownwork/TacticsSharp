@@ -25,6 +25,17 @@ namespace TacticsSharp
             }
         }
 
+        public void displayTeam()
+        {
+            Console.WriteLine("");
+            Console.WriteLine("Team " + name);
+            for (int i = 0; i < roster.Count; i++)
+            {
+                string temp = String.Format("    {0,5}  {1,5}", roster[i].getName(), roster[i].getHP());
+                Console.WriteLine(temp);
+            }
+        }
+
         //Add existing character
         public bool addCharacter(Character guy)
         {

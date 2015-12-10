@@ -52,8 +52,8 @@ namespace TacticsSharp
             Joe.heal(100F);
             Console.WriteLine(Joe.getHP());
 
-            string path = serializer(Joe);
-            Character Joe2 = deserializer(path);
+            //string path = serializer(Joe);
+            //Character Joe2 = deserializer(path);
 
             Joe.LearnSpell(NewSpell);
             Joe.LearnSpell(NewSpell);
@@ -78,6 +78,7 @@ namespace TacticsSharp
 
         }
 
+        /*  MOVED TO START MENU
         static string serializer(Character character)
         {
             //Path to Desktop
@@ -105,7 +106,7 @@ namespace TacticsSharp
             Console.WriteLine("Name: {0}", obj.getName());
 
             return obj;
-        }
+        }*/
     }
 }
 
