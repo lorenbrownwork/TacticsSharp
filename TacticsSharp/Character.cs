@@ -10,7 +10,7 @@ namespace TacticsSharp
     public class Character
     {
         private string name;
-        private int str, dex, con, intel, wis, maxHP, maxMP, HP, MP, XP, physDamage, magDamage, physResist, magResist;
+        private int str, dex, con, intel, wis, maxHP, maxMP, HP, MP, XP, physDamage, magDamage, physResist, magResist, level;
         private double manaGen, critChance;
 
         private double hpMultiplier = 4.0;
@@ -215,9 +215,14 @@ namespace TacticsSharp
             }
 
             //calc total damage
-            int totalDam = (this.physDamage - character.physResist) + (magDamage - character.magResist);
+            int totalDam = (this.physDamage - character.physResist) + (magDamage - magResist);
 
             takeDamage(character, totalDam);
+            if (character.getHP() == 0)
+            {
+
+            }
+                    
         }
 
         //single target and AoE?
