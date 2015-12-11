@@ -14,7 +14,7 @@ namespace TacticsSharp
     {
         static void Main(string[] args)
         {
-            Armor WoodenSheild = new Armor ("Wooden Sheild", 10, "Normal", 10, "Fire");
+            Armor WoodenShield = new Armor ("Wooden Sheild", 10, "Normal", 10, "Fire");
             Weapon RustySword = new Weapon ("Rusty Sword", 30, "Normal", 40, "Fire");
 
             Weapon BetterSword = new Weapon("Better Sword", 50, "Normal", 60, "Electric");
@@ -25,8 +25,8 @@ namespace TacticsSharp
             Spell NewSpell = new Spell("testSpell", 5, 20, "Fire", poison);
             Spell NextSpell = new Spell("nextSpell", 2, 5, "Fire");
 
-            Character Joe = new Character ("Joe", 100, 20, 2.0, 2.0, 1.0, RustySword, WoodenSheild);
-            Character Bob = new Character ("Bob", 100, 20, 1.0, 2.0, 1.0, RustySword, WoodenSheild);
+            Character Joe = new Character("Joe", 5, 5, 5, 5, 5, RustySword, WoodenShield);
+            Character Bob = new Character ("Bob", 10, 10, 5, 2, 2, RustySword, WoodenShield);
 
             LevelUp.LevelCharacter(ref Bob, 3);
 

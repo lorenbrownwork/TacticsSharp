@@ -10,8 +10,12 @@ namespace TacticsSharp
     public class Character
     {
         private string name;
-        private int maxHP, maxMP, HP, MP, physDamage, magDamage, physResist, magResist;
-        private double strength, toughness, manaGen;
+        private int str, dex, con, intel, wis, maxHP, maxMP, HP, MP, XP, physDamage, magDamage, physResist, magResist;
+        private double manaGen, critChance;
+
+        private double hpMultiplier = 2.0;
+        private double mpMultiplier = 2.0;
+        private double manaGenMultiplier = 1.0;
 
         private List<SpellEffect> activeEffects = new List<SpellEffect>();
         private List<Spell> knownSpells = new List<Spell>();
@@ -20,72 +24,67 @@ namespace TacticsSharp
         private Armor armor;
 
         //Default Constructor (Build a character)
-        public Character()
+        public Character(CharacterClass charClass)
         {
             Console.Clear();
             Console.WriteLine("Welcome to the Character Builder!");
             Console.Write("    Please Select a name: ");
             this.name = Console.ReadLine();
-            Console.WriteLine("    Max HP: 100");
-            Console.WriteLine("    Max MP: 100");
-            Console.WriteLine("    Physical Damage: 20");
-            Console.WriteLine("    Magic Damage: 20");
-            Console.WriteLine("    Physical Resist: 10");
-            Console.WriteLine("    Magic Resist: 10");
-            Console.WriteLine("    Stregth Multiplier: 1.0");
-            Console.WriteLine("    Toughness Multiplier: 1.0");
-            Console.WriteLine("    ManaGen Multiplier: 1.0");
-            Console.WriteLine("    Weapon: Rusty Sword");
-            Console.WriteLine("    Armor: Wooden Sheild");
-            Console.WriteLine("");
-            Console.WriteLine("    Press Any key to continue...");
             //Console.ReadLine(); //Wait
             Console.Clear();
 
-            maxHP = 100;
-            maxMP = 100;
-            HP = 100;
-            MP = 100;
-            physDamage = 20;
-            magDamage = 20;
-            physResist = 10;
-            magResist = 10;
-            strength = 1.0;
-            toughness = 1.0;
-            manaGen = 1.0;
-            HP = maxHP;
-            MP = maxMP;
+            str = charClass.str;
+            dex = charClass.dex;
+            con = charClass.con;
+            intel = charClass.intel;
+            wis = charClass.wis;
+
+            this.maxHP = (int)((double)con * hpMultiplier);
+            this.maxMP = (int)((double)intel * mpMultiplier);
+            this.manaGen = (int)((double)wis * manaGenMultiplier);
             weapon = new Weapon("Rusty Sword", 20, "Normal", 0, "None");
             armor = new Armor("Wooden Sheild", 10, "Normal", 0, "None");
+            this.HP = maxHP;
+            this.MP = maxMP;
+
+            //setting attack values on construction
+            this.physDamage = (int)(this.weapon.getPhysicalDamage() + this.str);
+
+            //setting resists on construction
+            this.physResist = (int)(this.armor.getPhysicalResist() + this.str);
+            this.magResist = (int)(this.armor.getMagicResist() + this.wis);
         }
 
         //Constructor
-        public Character(string name, int maxHP, int maxMP, double toughness, double strength, double manaGen, Weapon weapon, Armor armor) {
+        public Character(string name, int str, int dex, int con, int intel, int wis, Weapon weapon, Armor armor) {
             this.name = name;
-            this.maxHP = maxHP;
-            this.maxMP = maxMP;
-            this.toughness = toughness;
-            this.strength = strength;
-            this.manaGen = manaGen;
+            this.str = str;
+            this.dex = dex;
+            this.con = con;
+            this.intel = intel;
+            this.wis = wis;
+
+            this.maxHP = (int)((double)con * hpMultiplier);
+            this.maxMP = (int)((double)intel * mpMultiplier);
+            this.manaGen = (int)((double)wis * manaGenMultiplier);
             this.weapon = weapon;
             this.armor = armor;
             this.HP = maxHP;
             this.MP = maxMP;
 
             //setting attack values on construction
-            this.physDamage = (int)(this.weapon.getPhysicalDamage() * this.strength);
-            this.magDamage = (int)(this.weapon.getMagicDamage() * this.strength);
+            this.physDamage = (int)(this.weapon.getPhysicalDamage() + this.str);
 
             //setting resists on construction
-            this.physResist = (int)(this.armor.getPhysicalResist() * this.toughness);
-            this.magResist = (int)(this.armor.getMagicResist() * this.toughness);
+            this.physResist = (int)(this.armor.getPhysicalResist() + this.str);
+            this.magResist = (int)(this.armor.getMagicResist() + this.wis);
         }
 
         //Getters
         public string getName(){return name;}
         public int getMP() {return MP;}
         public int getHP() { return HP; }
-        public double getStrength() { return strength; }
+        public double getStrength() { return str; }
         public Weapon getWeapon() { return weapon; }
 
         //Equipment changers
@@ -95,8 +94,7 @@ namespace TacticsSharp
             this.weapon = newWeapon;
 
             //setting the new attack values
-            this.physDamage = (int)(this.weapon.getPhysicalDamage() * this.strength);
-            this.magDamage = (int)(this.weapon.getMagicDamage() * this.strength);
+            this.physDamage = (int)(this.weapon.getPhysicalDamage() * this.str);
         }
 
         public void changeArmor(Armor newArmor)
@@ -105,8 +103,8 @@ namespace TacticsSharp
             this.armor = newArmor;
 
             //setting the new resists
-            this.physResist = (int)(this.armor.getPhysicalResist() * this.toughness);
-            this.magResist = (int)(this.armor.getMagicResist() * this.toughness);
+            this.physResist = (int)(this.armor.getPhysicalResist() + this.str);
+            this.magResist = (int)(this.armor.getMagicResist() * this.wis);
         }
 
         //Heal by points
@@ -166,6 +164,16 @@ namespace TacticsSharp
 
             //cout << "Magic Damage After Armor: " << magDamage << endl;
             //cout << "Magic Damage After Resist: " << magDamage - magResist << endl;
+
+            if (physResist > physDamage)
+            {
+                physResist = physDamage;
+            }
+
+            if (magResist > magDamage)
+            {
+                magResist = magDamage;
+            }
 
             int actDamage = (physDamage - physResist) + (magDamage - magResist);
 

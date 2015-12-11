@@ -12,6 +12,8 @@ namespace TacticsSharp
         private int wins;
         private int losses;
         public List<Character> roster;
+
+        private CharacterClass charClass = new CharacterClass("Wizard", 3,2,3,10,10);
         
         //builds a team of 5 characters
         public Team()
@@ -53,7 +55,7 @@ namespace TacticsSharp
         {
             while (true)
             {
-                Character rookie = new Character();
+                Character rookie = new Character(charClass);
                 if (addCharacter(rookie))
                     return true;
                 Console.WriteLine("Teams must contain unique names.  Please select a different name");
