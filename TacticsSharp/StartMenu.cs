@@ -19,33 +19,6 @@ namespace TacticsSharp
         private List<Character> userClan; //Holds all characters (team or not)
         private List<Character> npcClan;  //Holds all NPC characters (team or not)
 
-        //Constructor
-        //public StartMenu()
-        //{
-        //    userClan = new List<Character>();
-        //    npcClan = new List<Character>();
-
-        //    int selection = mainMenu();
-        //    switch (selection)
-        //    {
-        //        case 0:
-        //            Console.WriteLine("New Game Selected");
-        //            break;
-        //        case 1:
-        //            Console.WriteLine("Load Game Selected");
-        //            loadUserCharacters();
-        //            break;
-        //        case 2:
-        //            Console.WriteLine("Save Game Selected");
-        //            saveUserCharacters();
-        //            break;
-        //        case 3:
-        //            Console.WriteLine("Quick Battle Selected");
-        //            quickBattle();
-        //            break;
-        //    }
-        //}
-
         public void startMenu()
         {
             userClan = new List<Character>();

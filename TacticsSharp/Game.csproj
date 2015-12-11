@@ -46,6 +46,7 @@
     <Compile Include="Character.cs" />
     <Compile Include="Armor.cs" />
     <Compile Include="Battle.cs" />
+    <Compile Include="LevelUp.cs" />
     <Compile Include="Team.cs" />
     <Compile Include="StartMenu.cs" />
     <Compile Include="Spell.cs" />
