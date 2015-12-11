@@ -13,7 +13,7 @@ namespace TacticsSharp
         private int str, dex, con, intel, wis, maxHP, maxMP, HP, MP, XP, physDamage, magDamage, physResist, magResist;
         private double manaGen, critChance;
 
-        private double hpMultiplier = 2.0;
+        private double hpMultiplier = 4.0;
         private double mpMultiplier = 2.0;
         private double manaGenMultiplier = 1.0;
 
@@ -194,6 +194,7 @@ namespace TacticsSharp
         {
             //local variable to calc magic damage
             int magDamage = this.magDamage;
+            int magResist = character.magResist;
 
             
             //type of damage
@@ -201,6 +202,17 @@ namespace TacticsSharp
             string magicAtkType = weapon.getMagicType();
 
             magDamage = checkResist(magDamage, magicAtkType, character.armor.getMagicType());
+
+            //ensure that you aren't doing negative damage
+            if (physResist > physDamage)
+            {
+                physResist = physDamage;
+            }
+
+            if (magResist > magDamage)
+            {
+                magResist = magDamage;
+            }
 
             //calc total damage
             int totalDam = (this.physDamage - character.physResist) + (magDamage - character.magResist);
