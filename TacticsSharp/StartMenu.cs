@@ -13,14 +13,40 @@ namespace TacticsSharp
     {
 
         //Number of selections - 1
-        private int posMax = 2;
+        private int posMax = 4;
         private Team aTeam;
         private Team bTeam;
         private List<Character> userClan; //Holds all characters (team or not)
         private List<Character> npcClan;  //Holds all NPC characters (team or not)
 
         //Constructor
-        public StartMenu()
+        //public StartMenu()
+        //{
+        //    userClan = new List<Character>();
+        //    npcClan = new List<Character>();
+
+        //    int selection = mainMenu();
+        //    switch (selection)
+        //    {
+        //        case 0:
+        //            Console.WriteLine("New Game Selected");
+        //            break;
+        //        case 1:
+        //            Console.WriteLine("Load Game Selected");
+        //            loadUserCharacters();
+        //            break;
+        //        case 2:
+        //            Console.WriteLine("Save Game Selected");
+        //            saveUserCharacters();
+        //            break;
+        //        case 3:
+        //            Console.WriteLine("Quick Battle Selected");
+        //            quickBattle();
+        //            break;
+        //    }
+        //}
+
+        public void startMenu()
         {
             userClan = new List<Character>();
             npcClan = new List<Character>();
@@ -43,23 +69,39 @@ namespace TacticsSharp
                     Console.WriteLine("Quick Battle Selected");
                     quickBattle();
                     break;
+                case 4:
+                    Console.WriteLine("Exiting Game");
+                    break;
             }
         }
 
         private void loadUserCharacters()
         {
             string userClanPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\TacticsSharp\\UserClans";
-            Directory.CreateDirectory(userClanPath); //Create directory if it does not exist
 
-            //Grab each file in the Clan Directory
-            string[] fileEntries = Directory.GetFiles(userClanPath);
-            foreach (string fileName in fileEntries)
+            if (!Directory.Exists(userClanPath))
             {
-                userClan.Add(deserializer(fileName));
+                Directory.CreateDirectory(userClanPath); //Create directory if it does not exist
+                Console.WriteLine("Directory was not found.  Directory has been created.");
             }
+            else
+            {
+                //Grab each file in the Clan Directory
+                string[] fileEntries = Directory.GetFiles(userClanPath);
+                foreach (string fileName in fileEntries)
+                {
+                    userClan.Add(deserializer(fileName));
+                }
 
-            Console.WriteLine(userClan[0].getName());
-                
+                if (userClan.Count > 0)
+                {
+                    Console.WriteLine(userClan[0].getName());
+                }
+                else
+                {
+                    Console.WriteLine("There are no characters to load.");
+                }
+            }
         }
         private void saveUserCharacters()
         {
@@ -71,8 +113,11 @@ namespace TacticsSharp
             }*/
 
             string userClanPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\TacticsSharp\\UserClans";
-            Directory.CreateDirectory(userClanPath); //Create directory if it does not exist
-
+            if (!Directory.Exists(userClanPath))
+            {
+                Directory.CreateDirectory(userClanPath); //Create directory if it does not exist
+                Console.WriteLine("Directory was not found.  Directory has been created.");
+            }
             //Iterate over Character list
             for (int i = 0; i < userClan.Count; i++)
             {
@@ -183,6 +228,13 @@ namespace TacticsSharp
                     Console.ForegroundColor = ConsoleColor.White;
                 }
                 else { Console.WriteLine("    Quick Battle"); }
+                if (position == 4)
+                {
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.WriteLine("    Exit Game");
+                    Console.ForegroundColor = ConsoleColor.White;
+                }
+                else { Console.WriteLine("    Exit Game"); }
 
                 //Read Key Input
                 ConsoleKeyInfo keypressed = Console.ReadKey(false);
