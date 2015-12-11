@@ -10,8 +10,11 @@ namespace TacticsSharp
     public class Character
     {
         private string name;
-        private int str, dex, con, intel, wis, maxHP, maxMP, HP, MP, XP, physDamage, magDamage, physResist, magResist, level;
+        private int str, dex, con, intel, wis, maxHP, maxMP, HP, MP, physDamage, magDamage, physResist, magResist;
+        private int XP, XPValue;
         private double manaGen, critChance;
+
+        private int level = 1;
 
         private double hpMultiplier = 4.0;
         private double mpMultiplier = 2.0;
@@ -39,6 +42,8 @@ namespace TacticsSharp
             intel = charClass.intel;
             wis = charClass.wis;
 
+            XPValue = level * 10;
+
             this.maxHP = (int)((double)con * hpMultiplier);
             this.maxMP = (int)((double)intel * mpMultiplier);
             this.manaGen = (int)((double)wis * manaGenMultiplier);
@@ -48,11 +53,13 @@ namespace TacticsSharp
             this.MP = maxMP;
 
             //setting attack values on construction
-            this.physDamage = (int)(this.weapon.getPhysicalDamage() + this.str);
+            //this.physDamage = (int)(this.weapon.getPhysicalDamage() + this.str);
+            setAttack();
 
             //setting resists on construction
-            this.physResist = (int)(this.armor.getPhysicalResist() + this.str);
-            this.magResist = (int)(this.armor.getMagicResist() + this.wis);
+            //this.physResist = (int)(this.armor.getPhysicalResist() + this.str);
+            //this.magResist = (int)(this.armor.getMagicResist() + this.wis);
+            setResist();
         }
 
         //Constructor
@@ -94,7 +101,8 @@ namespace TacticsSharp
             this.weapon = newWeapon;
 
             //setting the new attack values
-            this.physDamage = (int)(this.weapon.getPhysicalDamage() * this.str);
+            //this.physDamage = (int)(this.weapon.getPhysicalDamage() * this.str);
+            setAttack();
         }
 
         public void changeArmor(Armor newArmor)
@@ -103,8 +111,9 @@ namespace TacticsSharp
             this.armor = newArmor;
 
             //setting the new resists
-            this.physResist = (int)(this.armor.getPhysicalResist() + this.str);
-            this.magResist = (int)(this.armor.getMagicResist() * this.wis);
+            //this.physResist = (int)(this.armor.getPhysicalResist() + this.str);
+            //this.magResist = (int)(this.armor.getMagicResist() * this.wis);
+            setResist();
         }
 
         //Heal by points
@@ -220,7 +229,7 @@ namespace TacticsSharp
             takeDamage(character, totalDam);
             if (character.getHP() == 0)
             {
-
+                XP += (character.XP / (level / character.level));
             }
                     
         }
@@ -296,6 +305,16 @@ namespace TacticsSharp
             }
 
             return damage;
+        }
+
+        private void setAttack()
+        {
+            this.physDamage = (int)(this.weapon.getPhysicalDamage() + this.str); 
+        }
+        private void setResist()
+        {
+            this.physResist = (int)(this.armor.getPhysicalResist() + this.str);
+            this.magResist = (int)(this.armor.getMagicResist() + this.wis);
         }
     }
 }
