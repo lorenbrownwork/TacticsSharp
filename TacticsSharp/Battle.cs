@@ -12,11 +12,13 @@ namespace TacticsSharp
         private Team aTeam, bTeam;
         private static Random rnd;
 
-        public Battle(Team a, Team b)
+        public static void Battle(Team a, Team b)
         {
             rnd = new Random();
-            this.aTeam = a;
-            this.bTeam = b;
+            Team aTeam = a;
+            Team bTeam = b;
+
+            string winner = "None";
 
             while (battleRages())
             {
@@ -28,14 +30,16 @@ namespace TacticsSharp
             if (aHealth > bHealth)
             {
                 winner = "A";
+                Console.WriteLine("Winner: " + winner);
             }
             else if(bHealth > aHealth)
             {
                 winner = "B";
+                Console.WriteLine("Winner: " + winner);
             }
         }
 
-        private void autoTurn()
+        private static void autoTurn()
         {
 
             //Team A's turn
@@ -55,9 +59,8 @@ namespace TacticsSharp
                     {
                         r = rnd.Next(bTeam.roster.Count);
                     }
-                    bTeam.roster[r].hurt(teamMember); //teamMember hurts bTeam.roster[r]
+                    teamMember.Attack(bTeam.roster[r]); //teamMember hurts bTeam.roster[r]
                     Console.WriteLine(bTeam.roster[r].getName() + ": " + bTeam.roster[r].getHP());
-                        
                     
                 }
             }
@@ -79,14 +82,14 @@ namespace TacticsSharp
                     {
                         r = rnd.Next(aTeam.roster.Count);
                     }
-                    aTeam.roster[r].hurt(teamMember); //teamMember hurts aTeam.roster[r]
+                    teamMember.Attack(aTeam.roster[r]); //teamMember hurts aTeam.roster[r]
                     Console.WriteLine(aTeam.roster[r].getName() + ": " + aTeam.roster[r].getHP());
                      
                 }
             }
         }
 
-        private bool battleRages()
+        private static bool battleRages()
         {
             int aHealth = aTeam.roster.Sum(x => x.getHP());
             int bHealth = bTeam.roster.Sum(x => x.getHP());
