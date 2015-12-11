@@ -12,7 +12,7 @@ namespace TacticsSharp
         private Team aTeam, bTeam;
         private static Random rnd;
 
-        public static void Battle(Team a, Team b)
+        public static void NewBattle(Team a, Team b)
         {
             rnd = new Random();
             Team aTeam = a;
@@ -20,9 +20,9 @@ namespace TacticsSharp
 
             string winner = "None";
 
-            while (battleRages())
+            while (battleRages(aTeam, bTeam))
             {
-                autoTurn();
+                autoTurn(aTeam, bTeam);
             }
             int aHealth = aTeam.roster.Sum(x => x.getHP());
             int bHealth = bTeam.roster.Sum(x => x.getHP());
@@ -39,14 +39,14 @@ namespace TacticsSharp
             }
         }
 
-        private static void autoTurn()
+        private static void autoTurn(Team aTeam, Team bTeam)
         {
 
             //Team A's turn
             foreach (var teamMember in aTeam.roster)
             {
                 //Check if battle is over
-                if (battleRages() == false)
+                if (battleRages(aTeam, bTeam) == false)
                 {
                     return;
                 }
@@ -69,7 +69,7 @@ namespace TacticsSharp
             foreach (var teamMember in aTeam.roster)
             {
                 //Check if battle is over
-                if (battleRages() == false)
+                if (battleRages(aTeam, bTeam) == false)
                 {
                     return;
                 }
@@ -89,7 +89,7 @@ namespace TacticsSharp
             }
         }
 
-        private static bool battleRages()
+        private static bool battleRages(Team aTeam, Team bTeam)
         {
             int aHealth = aTeam.roster.Sum(x => x.getHP());
             int bHealth = bTeam.roster.Sum(x => x.getHP());

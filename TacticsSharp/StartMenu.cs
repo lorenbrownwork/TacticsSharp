@@ -179,8 +179,10 @@ namespace TacticsSharp
                 return false;
             }
             Console.WriteLine("Starting battle");
-            Battle myBattle = new Battle(aTeam, bTeam);
-            Console.WriteLine(myBattle.Winner);
+            //Battle myBattle = new Battle(aTeam, bTeam);
+            //Console.WriteLine(myBattle.Winner);
+
+            Battle.NewBattle(aTeam, bTeam);
             return true;
         }
 
