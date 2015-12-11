@@ -36,7 +36,7 @@ namespace TacticsSharp
             Bob.changeWeapon(RustySword);
 
             Console.WriteLine(Joe.getHP());
-            Joe.hurt(Bob);
+            //Joe.hurt(Bob);
             Console.WriteLine(Joe.getHP());
             Joe.heal(100F);
             Console.WriteLine(Joe.getHP());

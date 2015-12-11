@@ -15,24 +15,29 @@ namespace TacticsSharp
             Array.Clear(newPoints, 0, 5);
             int menuPos = 0;
 
-            //PLACE HOLDER TO GRAB POINTS FROM CHARACTER TO DISPLAY
-            oldPoints[0] = 0;
-            oldPoints[1] = 0;
-            oldPoints[2] = 0;
-            oldPoints[3] = 0;
-            oldPoints[4] = 0;
+            //Grab Character Stats
+            oldPoints[0] = character.str;
+            oldPoints[1] = character.dex;
+            oldPoints[2] = character.con;
+            oldPoints[3] = character.intel;
+            oldPoints[4] = character.wis;
 
             for (int i = points; i > 0; i--)
             {
                 Console.Clear();
                 if (i > 0)
-                    menuPos = levelMenu(oldPoints, ref newPoints, i, menuPos);
+                    levelMenu(oldPoints, ref newPoints, i, ref menuPos);
             }
 
-            //PLACE HOLDER TO EDIT POINTS
+            //Update Character Stats
+            character.str += newPoints[0];
+            character.dex += newPoints[1];
+            character.con += newPoints[2];
+            character.intel += newPoints[3];
+            character.wis += newPoints[4];
         }
 
-        private static int levelMenu(int[] oldPoints, ref int[] newPoints, int pointsAvailable, int position)
+        private static bool levelMenu(int[] oldPoints, ref int[] newPoints, int pointsAvailable, ref int position)
         {
             //Change background color
             Console.BackgroundColor = ConsoleColor.DarkGray;
@@ -66,10 +71,10 @@ namespace TacticsSharp
                 if (position == 2)
                 {
                     Console.ForegroundColor = ConsoleColor.Green;
-                    Console.WriteLine("    " + oldPoints[2] + " Endurance [+" + newPoints[2] + "]");
+                    Console.WriteLine("    " + oldPoints[2] + " Constitution [+" + newPoints[2] + "]");
                     Console.ForegroundColor = ConsoleColor.White;
                 }
-                else { Console.WriteLine("    " + oldPoints[2] + " Endurance [+" + newPoints[2] + "]"); }
+                else { Console.WriteLine("    " + oldPoints[2] + " Constitution [+" + newPoints[2] + "]"); }
                 if (position == 3)
                 {
                     Console.ForegroundColor = ConsoleColor.Green;
@@ -101,7 +106,7 @@ namespace TacticsSharp
                     Console.CursorVisible = true;
                     Console.Clear();
                     newPoints[position]++;
-                    return position;
+                    return true;
                 }
             }
         }

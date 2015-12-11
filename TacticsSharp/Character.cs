@@ -10,8 +10,9 @@ namespace TacticsSharp
     public class Character
     {
         private string name;
-        private int str, dex, con, intel, wis, maxHP, maxMP, HP, MP, XP, physDamage, magDamage, physResist, magResist, level;
+        private int maxHP, maxMP, HP, MP, XP, physDamage, magDamage, physResist, magResist, level;
         private double manaGen, critChance;
+        public int str, dex, con, intel, wis;
 
         private double hpMultiplier = 4.0;
         private double mpMultiplier = 2.0;
@@ -126,7 +127,7 @@ namespace TacticsSharp
         }
 
         //Character passed hurts this character
-        public void hurt(Character character)
+        /*public void hurt(Character character)
         {
             int physDamage = character.physDamage;
             int magDamage = character.magDamage;
@@ -187,7 +188,7 @@ namespace TacticsSharp
                 else
                     this.HP = 0;
             }
-        }
+        }*/
 
         //hurting the character being passed in
         public void Attack(Character character)
