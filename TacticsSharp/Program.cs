@@ -7,6 +7,9 @@ using System.IO;
 using System.Reflection;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
+using System.Drawing;
+using System.Windows.Forms;
+//using System.Windows.Forms;
 
 namespace TacticsSharp
 {
@@ -14,6 +17,10 @@ namespace TacticsSharp
     {
         static void Main(string[] args)
         {
+
+            //Build and create a 3d board
+            Application.Run(new Board());
+
             Armor WoodenShield = new Armor ("Wooden Sheild", 10, "Normal", 10, "Fire");
             Weapon RustySword = new Weapon ("Rusty Sword", 30, "Normal", 40, "Fire");
 
