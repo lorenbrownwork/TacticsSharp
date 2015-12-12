@@ -52,12 +52,6 @@
     <Compile Include="Board.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="GameBoardForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="GameBoardForm.Designer.cs">
-      <DependentUpon>GameBoardForm.cs</DependentUpon>
-    </Compile>
     <Compile Include="LevelUp.cs" />
     <Compile Include="Team.cs" />
     <Compile Include="StartMenu.cs" />
@@ -71,11 +65,6 @@
     <None Include="App.config" />
     <None Include="ImportFiles\effect-list.csv" />
     <None Include="ImportFiles\spell-list.csv" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="GameBoardForm.resx">
-      <DependentUpon>GameBoardForm.cs</DependentUpon>
-    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

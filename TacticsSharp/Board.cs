@@ -98,8 +98,6 @@ namespace TacticsSharp
             }
         }
 
-        
-
         private void drawTile(PaintEventArgs e, int x, int y)
         {
             
