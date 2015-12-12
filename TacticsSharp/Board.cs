@@ -5,8 +5,11 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Drawing;
 using System.Drawing;
+using System.Drawing.Drawing2D;
+using System.Drawing.Design;
 using System.Windows;
 using System.Windows.Forms;
+
 
 namespace TacticsSharp
 {
@@ -55,6 +58,7 @@ namespace TacticsSharp
                 }
             }
             gameBoard[0, 0].height = 3;
+            gameBoard[3, 3].height = 1;
         }
 
         protected override void OnPaint(PaintEventArgs e)
@@ -66,11 +70,33 @@ namespace TacticsSharp
 
         private void drawBoard(PaintEventArgs e, int xOff, int yOff, int size)
         {
+            //Draws all the tiles
             for (int i = 0; i < size; i++)
             {
                 drawLayer(e, 200, 200 - (i * 10), 5, i);
             }
-            
+            //Draw all the characters (similar code)
+            for (int i = 0; i < size; i++)
+            {
+                drawCharacters(e, xOff - (i * 50), yOff + (i * 25), 5, i);
+            }
+
+        }
+
+        private void drawCharacters(PaintEventArgs e, int xOff, int yOff, int size, int yTile)
+        {
+            int x = 72 * size;
+            int y = 65;
+
+            for (int i = 0; i < size; i++)
+            {
+                if (gameBoard[i, yTile].character == null)
+                { 
+                    drawBallRed(e, x + xOff - 25, y + yOff  - (10 * gameBoard[i, yTile].height));
+                }
+                x += 50;
+                y += 25;
+            }
         }
 
         private void drawLayer(PaintEventArgs e, int xOff, int yOff, int size, int layer)
@@ -123,6 +149,22 @@ namespace TacticsSharp
             e.Graphics.DrawPolygon(whitePen, right);
             e.Graphics.DrawPolygon(bluePen, top);
 
+        }
+
+        public void drawBallRed(PaintEventArgs e, int x, int y)
+        {
+            Rectangle bounds = new Rectangle(x, y, 35, 35);
+            GraphicsPath path = new GraphicsPath();
+            path.AddEllipse(bounds);
+
+            PathGradientBrush brush = new PathGradientBrush(path);
+            brush.CenterPoint = new Point(x + 10, y + 10);
+            ColorBlend cb = new ColorBlend(4);
+            cb.Colors = new Color[]
+               {  Color.DarkRed, Color.Firebrick, Color.IndianRed, Color.PeachPuff };
+            cb.Positions = new float[] { 0f, 0.3f, 0.6f, 1f };
+            brush.InterpolationColors = cb;
+            e.Graphics.FillPath(brush, path);
         }
     }
 }
