@@ -10,9 +10,15 @@ namespace TacticsSharp
     public class Character
     {
         private string name;
-        private int str, dex, con, intel, wis, maxHP, maxMP, HP, MP, physDamage, magDamage, physResist, magResist;
+        private int maxHP, maxMP, HP, MP, physDamage, magDamage, physResist, magResist;
         private int XP, XPValue;
         private double manaGen, critChance;
+        public int str, dex, con, intel, wis;
+
+        const int XPBASE = 10;
+        const double XPFACTOR = 2.0;
+
+        const double XPVALUEMULTIPLIER = 10.0;
 
         private int level = 1;
 
@@ -42,7 +48,7 @@ namespace TacticsSharp
             intel = charClass.intel;
             wis = charClass.wis;
 
-            XPValue = level * 10;
+            XPValue = Convert.ToInt32((double)level * XPVALUEMULTIPLIER);
 
             this.maxHP = (int)((double)con * hpMultiplier);
             this.maxMP = (int)((double)intel * mpMultiplier);
@@ -71,6 +77,8 @@ namespace TacticsSharp
             this.intel = intel;
             this.wis = wis;
 
+            XPValue = Convert.ToInt32((double)level * XPVALUEMULTIPLIER);
+
             this.maxHP = (int)((double)con * hpMultiplier);
             this.maxMP = (int)((double)intel * mpMultiplier);
             this.manaGen = (int)((double)wis * manaGenMultiplier);
@@ -80,11 +88,13 @@ namespace TacticsSharp
             this.MP = maxMP;
 
             //setting attack values on construction
-            this.physDamage = (int)(this.weapon.getPhysicalDamage() + this.str);
+            //this.physDamage = (int)(this.weapon.getPhysicalDamage() + this.str);
+            setAttack();
 
             //setting resists on construction
-            this.physResist = (int)(this.armor.getPhysicalResist() + this.str);
-            this.magResist = (int)(this.armor.getMagicResist() + this.wis);
+            //this.physResist = (int)(this.armor.getPhysicalResist() + this.str);
+            //this.magResist = (int)(this.armor.getMagicResist() + this.wis);
+            setResist();
         }
 
         //Getters
@@ -135,7 +145,7 @@ namespace TacticsSharp
         }
 
         //Character passed hurts this character
-        public void hurt(Character character)
+        /*public void hurt(Character character)
         {
             int physDamage = character.physDamage;
             int magDamage = character.magDamage;
@@ -196,7 +206,7 @@ namespace TacticsSharp
                 else
                     this.HP = 0;
             }
-        }
+        }*/
 
         //hurting the character being passed in
         public void Attack(Character character)
@@ -229,7 +239,7 @@ namespace TacticsSharp
             takeDamage(character, totalDam);
             if (character.getHP() == 0)
             {
-                XP += (character.XP / (level / character.level));
+                getXP(character);
             }
                     
         }
@@ -251,6 +261,10 @@ namespace TacticsSharp
             }
 
             takeDamage(character, totalDam);
+            if (character.getHP() == 0)
+            {
+                getXP(character);
+            }
         }
 
         public void LearnSpell(Spell spell)
@@ -315,6 +329,47 @@ namespace TacticsSharp
         {
             this.physResist = (int)(this.armor.getPhysicalResist() + this.str);
             this.magResist = (int)(this.armor.getMagicResist() + this.wis);
+        }
+        public void getXP(Character character)
+        {
+            double xpToGet = XPBASE * Math.Pow((double)(this.level + 1), XPFACTOR);
+            
+                XP += (character.XPValue / (level / character.level));
+                Console.WriteLine("You gained {0} XP!", character.XPValue);
+            
+            if (XP > xpToGet)
+            {
+                LevelCharacter(2);
+            }
+            
+        }
+        public void LevelCharacter(int points)
+        {
+            int[] oldPoints = new int[5];
+            int[] newPoints = new int[5];
+            Array.Clear(newPoints, 0, 5);
+            int menuPos = 0;
+
+            //Grab Character Stats
+            oldPoints[0] = str;
+            oldPoints[1] = dex;
+            oldPoints[2] = con;
+            oldPoints[3] = intel;
+            oldPoints[4] = wis;
+
+            for (int i = points; i > 0; i--)
+            {
+                Console.Clear();
+                if (i > 0)
+                    LevelUp.levelMenu(oldPoints, ref newPoints, i, ref menuPos);
+            }
+
+            //Update Character Stats
+            str += newPoints[0];
+            dex += newPoints[1];
+            con += newPoints[2];
+            intel += newPoints[3];
+            wis += newPoints[4];
         }
     }
 }

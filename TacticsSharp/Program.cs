@@ -7,6 +7,7 @@ using System.IO;
 using System.Reflection;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
+using System.Net;
 
 namespace TacticsSharp
 {
@@ -28,7 +29,7 @@ namespace TacticsSharp
             Character Joe = new Character("Joe", 5, 5, 5, 5, 5, RustySword, WoodenShield);
             Character Bob = new Character ("Bob", 10, 10, 5, 2, 2, RustySword, WoodenShield);
 
-            LevelUp.LevelCharacter(ref Bob, 3);
+            Bob.LevelCharacter(3);
 
             Console.WriteLine(Bob.getWeapon().getName());
             Bob.changeWeapon(BetterSword);
@@ -36,7 +37,7 @@ namespace TacticsSharp
             Bob.changeWeapon(RustySword);
 
             Console.WriteLine(Joe.getHP());
-            Joe.hurt(Bob);
+            //Joe.hurt(Bob);
             Console.WriteLine(Joe.getHP());
             Joe.heal(100F);
             Console.WriteLine(Joe.getHP());

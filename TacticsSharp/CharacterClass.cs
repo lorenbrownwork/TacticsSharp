@@ -9,7 +9,7 @@ namespace TacticsSharp
     public class CharacterClass
     {
         private string name;
-        private int maxHP, maxMP, HP, MP, XP, physDamage, magDamage, physResist, magResist;
+        private int maxHP, maxMP, HP, MP, physDamage, magDamage, physResist, magResist;
         public int str, dex, con, intel, wis;
         private double manaGen, critChance;
 

@@ -8,31 +8,7 @@ namespace TacticsSharp
 {
     class LevelUp
     {
-        public static void LevelCharacter(ref Character character, int points)
-        {
-            int[] oldPoints = new int[5];
-            int[] newPoints = new int[5];
-            Array.Clear(newPoints, 0, 5);
-            int menuPos = 0;
-
-            //PLACE HOLDER TO GRAB POINTS FROM CHARACTER TO DISPLAY
-            oldPoints[0] = 0;
-            oldPoints[1] = 0;
-            oldPoints[2] = 0;
-            oldPoints[3] = 0;
-            oldPoints[4] = 0;
-
-            for (int i = points; i > 0; i--)
-            {
-                Console.Clear();
-                if (i > 0)
-                    menuPos = levelMenu(oldPoints, ref newPoints, i, menuPos);
-            }
-
-            //PLACE HOLDER TO EDIT POINTS
-        }
-
-        private static int levelMenu(int[] oldPoints, ref int[] newPoints, int pointsAvailable, int position)
+        public static bool levelMenu(int[] oldPoints, ref int[] newPoints, int pointsAvailable, ref int position)
         {
             //Change background color
             Console.BackgroundColor = ConsoleColor.DarkGray;
@@ -66,10 +42,10 @@ namespace TacticsSharp
                 if (position == 2)
                 {
                     Console.ForegroundColor = ConsoleColor.Green;
-                    Console.WriteLine("    " + oldPoints[2] + " Endurance [+" + newPoints[2] + "]");
+                    Console.WriteLine("    " + oldPoints[2] + " Constitution [+" + newPoints[2] + "]");
                     Console.ForegroundColor = ConsoleColor.White;
                 }
-                else { Console.WriteLine("    " + oldPoints[2] + " Endurance [+" + newPoints[2] + "]"); }
+                else { Console.WriteLine("    " + oldPoints[2] + " Constitution [+" + newPoints[2] + "]"); }
                 if (position == 3)
                 {
                     Console.ForegroundColor = ConsoleColor.Green;
@@ -101,7 +77,7 @@ namespace TacticsSharp
                     Console.CursorVisible = true;
                     Console.Clear();
                     newPoints[position]++;
-                    return position;
+                    return true;
                 }
             }
         }
