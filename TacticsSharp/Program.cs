@@ -20,7 +20,7 @@ namespace TacticsSharp
         {
 
             //Build and create a 3d board
-            Application.Run(new Board());
+            //Application.Run(new Board());
 
             Armor WoodenShield = new Armor ("Wooden Sheild", 10, "Normal", 10, "Fire");
             Weapon RustySword = new Weapon ("Rusty Sword", 30, "Normal", 40, "Fire");
@@ -37,7 +37,7 @@ namespace TacticsSharp
             Character Bob = new Character ("Bob", 10, 10, 5, 2, 2, RustySword, WoodenShield);
 
             Bob.LevelCharacter(3);
-
+            
             Console.WriteLine(Bob.getWeapon().getName());
             Bob.changeWeapon(BetterSword);
             Console.WriteLine(Bob.getWeapon().getName());
@@ -76,10 +76,8 @@ namespace TacticsSharp
 
             foreach (Spell spell in spellList)
             {
-
                 Console.WriteLine(spell.getName());
             }
-            Console.WriteLine(Environment.CurrentDirectory);
 
             //StartMenu game = new StartMenu();
             StartMenu menu = new StartMenu();

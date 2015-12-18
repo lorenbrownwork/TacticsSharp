@@ -20,10 +20,11 @@ namespace TacticsSharp
 
             string winner = "None";
 
-            while (battleRages(aTeam, bTeam))
-            {
-                autoTurn(aTeam, bTeam);
-            }
+            //while (battleRages(aTeam, bTeam))
+            //{
+            //    autoTurn(aTeam, bTeam);
+            //}
+            List<Character> sortedList = turnOrder(aTeam, bTeam);
             int aHealth = aTeam.roster.Sum(x => x.getHP());
             int bHealth = bTeam.roster.Sum(x => x.getHP());
 
@@ -89,6 +90,14 @@ namespace TacticsSharp
             }
         }
 
+        private static void listTurn(List<Character> charList)
+        {
+            foreach (var member in charList)
+            {
+
+            }
+        }
+
         private static bool battleRages(Team aTeam, Team bTeam)
         {
             int aHealth = aTeam.roster.Sum(x => x.getHP());
@@ -107,6 +116,35 @@ namespace TacticsSharp
             {
                 return winner;
             }
+        }
+
+        private static void takeTurn()
+        {
+
+        }
+
+        //takes the two teams, puts them into a big list, and sorts them by dex
+        //gives a simple turn order, not just the two teams all going at once
+        //need to put in some way to distinguish teams(?)
+            //might not, allows team damage
+        private static List<Character> turnOrder(Team a, Team b)
+        {
+            //make the list
+            List<Character> characterList = new List<Character>();
+            int i = 0;
+            //put characters into the list
+            foreach (Character character in a)
+            {
+                characterList.Add(character);
+            }
+            foreach (Character character in b)
+            {
+                characterList.Add(character);
+            }
+
+            //sort and return the list
+            List<Character> sortedList = characterList.OrderByDescending(x => x.dex).ToList();
+            return sortedList;
         }
     }
 }

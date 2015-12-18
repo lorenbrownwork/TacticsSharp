@@ -348,7 +348,6 @@ namespace TacticsSharp
             int[] oldPoints = new int[5];
             int[] newPoints = new int[5];
             Array.Clear(newPoints, 0, 5);
-            int menuPos = 0;
 
             //Grab Character Stats
             oldPoints[0] = str;
@@ -357,12 +356,13 @@ namespace TacticsSharp
             oldPoints[3] = intel;
             oldPoints[4] = wis;
 
-            for (int i = points; i > 0; i--)
-            {
-                Console.Clear();
-                if (i > 0)
-                    LevelUp.levelMenu(oldPoints, ref newPoints, i, ref menuPos);
-            }
+            //for (int i = points; i > 0; i--)
+            //{
+            //    Console.Clear();
+            //    if (i > 0)
+            //        LevelUp.levelMenu(oldPoints, ref newPoints, i, ref menuPos);
+            //}
+            newPoints = LevelUp.levelMenu(oldPoints, newPoints, points);
 
             //Update Character Stats
             str += newPoints[0];

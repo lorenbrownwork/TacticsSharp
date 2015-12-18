@@ -8,13 +8,14 @@ namespace TacticsSharp
 {
     class LevelUp
     {
-        public static bool levelMenu(int[] oldPoints, ref int[] newPoints, int pointsAvailable, ref int position)
+        public static int[] levelMenu(int[] oldPoints, int[] newPoints, int pointsAvailable)
         {
             //Change background color
             Console.BackgroundColor = ConsoleColor.DarkGray;
             Console.ForegroundColor = ConsoleColor.White;
             Console.CursorVisible = false;
             int posMax = 4;
+            int position = 0;
             
 
             //int position = 0;
@@ -71,13 +72,48 @@ namespace TacticsSharp
                 {
                     position -= 1;
                 }
-                else if ((int)keypressed.Key == (char)ConsoleKey.Enter)
+                //else if ((int)keypressed.Key == (char)ConsoleKey.Enter)
+                //{
+                //    Console.BackgroundColor = ConsoleColor.Black;
+                //    Console.CursorVisible = true;
+                //    Console.Clear();
+                //    newPoints[position]++;
+                //    return true;
+                //}
+                else if ((int)keypressed.Key == (char)ConsoleKey.LeftArrow)
                 {
-                    Console.BackgroundColor = ConsoleColor.Black;
-                    Console.CursorVisible = true;
+                    //Console.BackgroundColor = ConsoleColor.Black;
+                    //Console.CursorVisible = true;
                     Console.Clear();
-                    newPoints[position]++;
-                    return true;
+                    if (newPoints[position] > 0)
+                    {
+                        newPoints[position]--;
+                        pointsAvailable++;
+                    }
+                }
+                else if ((int)keypressed.Key == (char)ConsoleKey.RightArrow)
+                {
+                    //Console.BackgroundColor = ConsoleColor.Black;
+                    //Console.CursorVisible = true;
+                    Console.Clear();
+                    if (pointsAvailable > 0)
+                    {
+                        newPoints[position]++;
+                        pointsAvailable--;
+                    }
+                }
+
+                if (pointsAvailable <= 0)
+                {
+                    Console.WriteLine("To accept these choices, please press enter.");
+                    keypressed = Console.ReadKey(false);
+
+                    if ((int)keypressed.Key == (char)ConsoleKey.Enter)
+                    {
+                        Console.BackgroundColor = ConsoleColor.Black;
+                        Console.CursorVisible = true;
+                        return newPoints;
+                    }
                 }
             }
         }
