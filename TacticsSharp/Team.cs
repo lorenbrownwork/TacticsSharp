@@ -80,5 +80,18 @@ namespace TacticsSharp
             get { return losses; }
             set { losses = value; }
         }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            // call the generic version of the method
+            return this.GetEnumerator();
+        }
+
+        public IEnumerator<Character> GetEnumerator()
+        {
+            //returns the enumerator of the roster
+            //no idea why this is needed, but it is
+            return roster.GetEnumerator();
+        }
     }
 }

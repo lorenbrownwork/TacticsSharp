@@ -68,6 +68,8 @@ namespace TacticsSharp
             Joe.LearnSpell(NewSpell);
             Joe.LearnSpell(NewSpell);
 
+            Joe.CastSpell(Bob);
+
             List<SpellEffect> effectList = new List<SpellEffect>();
             effectList = SpellEffect.ImportEffects("../../ImportFiles/effect-list.csv", effectList);
 
@@ -86,7 +88,6 @@ namespace TacticsSharp
             
             //Wait
             Console.ReadKey();
-
         }
 
         /*  MOVED TO START MENU

@@ -27,6 +27,7 @@ namespace TacticsSharp
         }
 
         public int GetId() { return id; }
+        public string getName() { return name; }
 
         public static List<SpellEffect> ImportEffects(string path, List<SpellEffect> effectList)
         {

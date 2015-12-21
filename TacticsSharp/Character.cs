@@ -14,11 +14,19 @@ namespace TacticsSharp
         private int XP, XPValue;
         private double manaGen, critChance;
         public int str, dex, con, intel, wis;
+        private bool defendFlag = false;
+
+        //setting team value
+        //no team is 0
+        //teams are > 1
+        //only have as many teams as there are on the field at any given time
+        private int team = 0;
 
         const int XPBASE = 10;
         const double XPFACTOR = 2.0;
 
         const double XPVALUEMULTIPLIER = 10.0;
+        const int SKILLPOINTS = 2;
 
         private int level = 1;
 
@@ -233,37 +241,97 @@ namespace TacticsSharp
                 magResist = magDamage;
             }
 
-            //calc total damage
-            int totalDam = (this.physDamage - character.physResist) + (magDamage - magResist);
-
-            takeDamage(character, totalDam);
-            if (character.getHP() == 0)
+            if (character.getHP() != 0)
             {
-                getXP(character);
+                //calc total damage
+                int totalDam = (this.physDamage - character.physResist) + (magDamage - magResist);
+
+                takeDamage(character, totalDam);
+                if (character.getHP() == 0)
+                {
+                    getXP(character);
+                }
+            }
+            else
+            {
+                Console.WriteLine("That character is already dead!");
             }
                     
         }
 
         //single target and AoE?
         //won't need a character in the latter case
-        public void CastSpell(Character character, Spell spell)
+        public void CastSpell(Character character)
         {
-            int damage = spell.getDamage();
-            string type = spell.getType();
+            if (knownSpells.Count == 0)
+            {
+                Console.WriteLine("You don't know any spells!");
+                return;
+            }
+
+            Spell chosenSpell = null;
+
+            int position = 0;
+            int posMax = knownSpells.Count - 1;
+
+            bool spellChosen = false;
+
+            while (!spellChosen)
+            {
+                int i = 0;
+                foreach (Spell spell in knownSpells)
+                {
+                    if (position == i)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Green;
+                        Console.WriteLine("    Spell: {0}, Damage: {1}, Type: {2}, Effect: {3}", knownSpells[i].getName(), knownSpells[i].getDamage(), knownSpells[i].getType(), knownSpells[i].getEffect().getName());
+                        Console.ForegroundColor = ConsoleColor.White;
+                    }
+                    else { Console.WriteLine("    Spell: {0}, Damage: {1}, Type: {2}, Effect: {3}", knownSpells[i].getName(), knownSpells[i].getDamage(), knownSpells[i].getType(), knownSpells[i].getEffect().getName()); }
+                    i++;
+                }
+                //Read Key Input
+                ConsoleKeyInfo keypressed = Console.ReadKey(false);
+                if ((int)keypressed.Key == (char)ConsoleKey.DownArrow && position < posMax)
+                {
+                    position += 1;
+                }
+                else if ((int)keypressed.Key == (char)ConsoleKey.UpArrow && position > 0)
+                {
+                    position -= 1;
+                }
+                else if ((int)keypressed.Key == (char)ConsoleKey.Enter)
+                {
+                    Console.BackgroundColor = ConsoleColor.Black;
+                    Console.CursorVisible = true;
+                    Console.Clear();
+                    spellChosen = true;
+                    chosenSpell = knownSpells[position];
+                }
+            }
+
+            int damage = chosenSpell.getDamage();
+            string type = chosenSpell.getType();
 
             damage = checkResist(damage, type, character.armor.getMagicType());
 
-            int totalDam = damage - character.magResist;
-
-            if (spell.getEffect() != null)
+            if (character.getHP() != 0)
             {
-                character.activeEffects.Add(spell.getEffect());
+                int totalDam = damage - character.magResist;
+
+                if (chosenSpell.getEffect() != null)
+                {
+                    character.activeEffects.Add(chosenSpell.getEffect());
+                }
+                takeDamage(character, totalDam);
+                if (character.getHP() == 0)
+                {
+                    getXP(character);
+                }
             }
-
-            takeDamage(character, totalDam);
-            if (character.getHP() == 0)
+            else
             {
-                getXP(character);
+                Console.WriteLine("That character is already dead!");
             }
         }
 
@@ -334,12 +402,12 @@ namespace TacticsSharp
         {
             double xpToGet = XPBASE * Math.Pow((double)(this.level + 1), XPFACTOR);
             
-                XP += (character.XPValue / (level / character.level));
-                Console.WriteLine("You gained {0} XP!", character.XPValue);
+            XP += (character.XPValue / (level / character.level));
+            Console.WriteLine("You gained {0} XP!", character.XPValue);
             
             if (XP > xpToGet)
             {
-                LevelCharacter(2);
+                LevelCharacter(SKILLPOINTS);
             }
             
         }
@@ -370,6 +438,20 @@ namespace TacticsSharp
             con += newPoints[2];
             intel += newPoints[3];
             wis += newPoints[4];
+        }
+
+        public void setTeam(int team)
+        {
+            this.team = team;
+        }
+        public int getTeam()
+        {
+            return team;
+        }
+
+        public void setDefenseFlag(bool setting)
+        {
+            defendFlag = setting;
         }
     }
 }

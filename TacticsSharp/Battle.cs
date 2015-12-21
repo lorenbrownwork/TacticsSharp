@@ -9,22 +9,31 @@ namespace TacticsSharp
     class Battle
     {
         private string winner = "None";
-        private Team aTeam, bTeam;
+        private static Team aTeam, bTeam;
         private static Random rnd;
 
         public static void NewBattle(Team a, Team b)
         {
             rnd = new Random();
-            Team aTeam = a;
-            Team bTeam = b;
+            aTeam = a;
+            bTeam = b;
 
             string winner = "None";
 
-            //while (battleRages(aTeam, bTeam))
-            //{
-            //    autoTurn(aTeam, bTeam);
-            //}
             List<Character> sortedList = turnOrder(aTeam, bTeam);
+
+            while (battleRages(aTeam, bTeam))
+            {
+                //autoTurn(aTeam, bTeam);
+                foreach (Character character in sortedList)
+                {
+                    if (character.getHP() > 0)
+                    {
+                        takeTurn(character);
+                    }
+                }
+            }
+
             int aHealth = aTeam.roster.Sum(x => x.getHP());
             int bHealth = bTeam.roster.Sum(x => x.getHP());
 
@@ -90,14 +99,6 @@ namespace TacticsSharp
             }
         }
 
-        private static void listTurn(List<Character> charList)
-        {
-            foreach (var member in charList)
-            {
-
-            }
-        }
-
         private static bool battleRages(Team aTeam, Team bTeam)
         {
             int aHealth = aTeam.roster.Sum(x => x.getHP());
@@ -118,9 +119,163 @@ namespace TacticsSharp
             }
         }
 
-        private static void takeTurn()
+        private static void takeTurn(Character character)
         {
+            if (character.getTeam() == 1)
+            {
+                //int r = rnd.Next(bTeam.roster.Count); //Randomly pick opponent
+                //while (bTeam.roster[r].getHP() <= 0)
+                //{
+                //    r = rnd.Next(bTeam.roster.Count);
+                //}
+                int r = pickEnemy(character);
 
+                character.Attack(bTeam.roster[r]);
+                Console.WriteLine(bTeam.roster[r].getName() + ": " + bTeam.roster[r].getHP());
+            }
+            else if (character.getTeam() == 2)
+            {
+                //int r = rnd.Next(aTeam.roster.Count); //Randomly pick opponent
+                //while (aTeam.roster[r].getHP() <= 0)
+                //{
+                //    r = rnd.Next(aTeam.roster.Count);
+                //}
+                int r = pickEnemy(character);
+                character.Attack(aTeam.roster[r]); //teamMember hurts aTeam.roster[r]
+                Console.WriteLine(aTeam.roster[r].getName() + ": " + aTeam.roster[r].getHP());
+            }
+            else
+            {
+                Console.WriteLine("You're on the wrong team!");
+            }
+        }
+
+        private static int pickEnemy(Character character)
+        {
+            int position = 0;
+            int posMax = 0;
+            if (character.getTeam() == 1)
+            {
+                posMax = bTeam.roster.Count();
+            }
+            else if (character.getTeam() == 2)
+            {
+                posMax = aTeam.roster.Count();
+            }
+            while (true)
+            {
+                Console.Clear();
+                Console.WriteLine("    Attacking: {0}", character.getName());
+                if (character.getTeam() == 1)
+                {
+                    int i = 0;
+                    foreach (Character enemy in bTeam.roster)
+                    {
+                        if (position == i)
+                        {
+                            Console.ForegroundColor = ConsoleColor.Green;
+                            Console.WriteLine("    Name: {0}, HP: {1}", bTeam.roster[i].getName(), bTeam.roster[i].getHP());
+                            Console.ForegroundColor = ConsoleColor.White;
+                        }
+                        else { Console.WriteLine("    Name: {0}, HP: {1}", bTeam.roster[i].getName(), bTeam.roster[i].getHP()); }
+                        i++;
+                    }
+                }
+
+                if (character.getTeam() == 2)
+                {
+                    int i = 0;
+                    foreach (Character enemy in aTeam.roster)
+                    {
+                        if (position == i)
+                        {
+                            Console.ForegroundColor = ConsoleColor.Green;
+                            Console.WriteLine("    Name: {0}, HP: {1}", aTeam.roster[i].getName(), aTeam.roster[i].getHP());
+                            Console.ForegroundColor = ConsoleColor.White;
+                        }
+                        else { Console.WriteLine("    Name: {0}, HP: {1}", aTeam.roster[i].getName(), aTeam.roster[i].getHP()); }
+                        i++;
+                    }
+                }
+
+                //Read Key Input
+                ConsoleKeyInfo keypressed = Console.ReadKey(false);
+                if ((int)keypressed.Key == (char)ConsoleKey.DownArrow && position < posMax)
+                {
+                    position += 1;
+                }
+                else if ((int)keypressed.Key == (char)ConsoleKey.UpArrow && position > 0)
+                {
+                    position -= 1;
+                }
+                else if ((int)keypressed.Key == (char)ConsoleKey.Enter)
+                {
+                    Console.BackgroundColor = ConsoleColor.Black;
+                    Console.CursorVisible = true;
+                    Console.Clear();
+                    return position;
+                }
+            }
+        }
+
+        private static void takeAction(Character character, int enemy)
+        {
+            int position = 0;
+            int posMax = 2;
+
+            while (true)
+            {
+                Console.Clear();
+                Console.WriteLine("    Attacking: {0}", character.getName());
+
+                if (position == 0)
+                {
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.WriteLine("    Attack");
+                    Console.ForegroundColor = ConsoleColor.White;
+                }
+                else { Console.WriteLine("    Attack"); }
+                if (position == 1)
+                {
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.WriteLine("    Cast Spell");
+                    Console.ForegroundColor = ConsoleColor.White;
+                }
+                else { Console.WriteLine("    Cast Spell"); }
+                if (position == 2)
+                {
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.WriteLine("    Defend");
+                    Console.ForegroundColor = ConsoleColor.White;
+                }
+                else { Console.WriteLine("    Defend"); }
+
+                //Read Key Input
+                ConsoleKeyInfo keypressed = Console.ReadKey(false);
+                if ((int)keypressed.Key == (char)ConsoleKey.DownArrow && position < posMax)
+                {
+                    position += 1;
+                }
+                else if ((int)keypressed.Key == (char)ConsoleKey.UpArrow && position > 0)
+                {
+                    position -= 1;
+                }
+                else if ((int)keypressed.Key == (char)ConsoleKey.Enter)
+                {
+                    if (position == 0)
+                    {
+                        character.Attack(bTeam.roster[enemy]);
+                    }
+                    else if (position == 1)
+                    {
+                        character.CastSpell(bTeam.roster[enemy]);
+                    }
+                    else if (position == 2)
+                    {
+                        character.setDefenseFlag(true);
+                    }
+                }
+            }
         }
 
         //takes the two teams, puts them into a big list, and sorts them by dex
@@ -135,10 +290,12 @@ namespace TacticsSharp
             //put characters into the list
             foreach (Character character in a)
             {
+                character.setTeam(1);
                 characterList.Add(character);
             }
             foreach (Character character in b)
             {
+                character.setTeam(2);
                 characterList.Add(character);
             }
 
