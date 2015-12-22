@@ -261,12 +261,13 @@ namespace TacticsSharp
 
         //single target and AoE?
         //won't need a character in the latter case
-        public void CastSpell(Character character)
+        public bool CastSpell(Character character)
         {
             if (knownSpells.Count == 0)
             {
                 Console.WriteLine("You don't know any spells!");
-                return;
+                Console.ReadLine();
+                return false;
             }
 
             Spell chosenSpell = null;
@@ -328,10 +329,12 @@ namespace TacticsSharp
                 {
                     getXP(character);
                 }
+                return true;
             }
             else
             {
                 Console.WriteLine("That character is already dead!");
+                return false;
             }
         }
 

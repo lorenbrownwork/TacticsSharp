@@ -129,8 +129,8 @@ namespace TacticsSharp
                 //    r = rnd.Next(bTeam.roster.Count);
                 //}
                 int r = pickEnemy(character);
-
-                character.Attack(bTeam.roster[r]);
+                takeAction(character, r);
+                //character.Attack(bTeam.roster[r]);
                 Console.WriteLine(bTeam.roster[r].getName() + ": " + bTeam.roster[r].getHP());
             }
             else if (character.getTeam() == 2)
@@ -141,7 +141,8 @@ namespace TacticsSharp
                 //    r = rnd.Next(aTeam.roster.Count);
                 //}
                 int r = pickEnemy(character);
-                character.Attack(aTeam.roster[r]); //teamMember hurts aTeam.roster[r]
+                takeAction(character, r);
+                //character.Attack(aTeam.roster[r]); //teamMember hurts aTeam.roster[r]
                 Console.WriteLine(aTeam.roster[r].getName() + ": " + aTeam.roster[r].getHP());
             }
             else
@@ -222,8 +223,9 @@ namespace TacticsSharp
         {
             int position = 0;
             int posMax = 2;
+            bool turnTaken = false;
 
-            while (true)
+            while (!turnTaken)
             {
                 Console.Clear();
                 Console.WriteLine("    Attacking: {0}", character.getName());
@@ -265,14 +267,24 @@ namespace TacticsSharp
                     if (position == 0)
                     {
                         character.Attack(bTeam.roster[enemy]);
+                        turnTaken = true;
                     }
                     else if (position == 1)
                     {
-                        character.CastSpell(bTeam.roster[enemy]);
+                        bool success = character.CastSpell(bTeam.roster[enemy]);
+                        if (success)
+                        {
+                            turnTaken = true;
+                        }
+                        else
+                        {
+                            turnTaken = false;
+                        }
                     }
                     else if (position == 2)
                     {
                         character.setDefenseFlag(true);
+                        turnTaken = true;
                     }
                 }
             }
